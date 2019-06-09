@@ -6,6 +6,7 @@
 package sistema.principal;
 
 import javax.swing.*;
+import sistema.telas.*;
 
 /**
  *
@@ -26,6 +27,12 @@ public class Sistema {
         frame.setSize(700, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+
+        painel = new Login();
+        painel.setVisible(true);
+        frame.add(painel);
+
+        frame.setVisible(true);
 
     }
 
