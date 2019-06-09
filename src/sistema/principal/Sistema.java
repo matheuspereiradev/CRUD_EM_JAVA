@@ -28,7 +28,7 @@ public class Sistema {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
-        painel = new Login();
+        painel = new ListarCargos();
         painel.setVisible(true);
         frame.add(painel);
 

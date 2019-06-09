@@ -21,6 +21,7 @@ public class Login extends JPanel {
 
     public Login() {
         criarComponentes();
+        criarEventos();
     }
 
     private void criarComponentes() {
@@ -53,6 +54,10 @@ public class Login extends JPanel {
         add(pf_senha);
 
         setVisible(true);
+    }
+
+    private void criarEventos() {
+
     }
 
 }
