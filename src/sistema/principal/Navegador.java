@@ -5,6 +5,7 @@
  */
 package sistema.principal;
 
+import sistema.entidades.*;
 import sistema.telas.*;
 
 /**
@@ -37,8 +38,8 @@ public class Navegador {
         atualizarTela();
     }
 
-    public static void editarCargo() {
-        Sistema.painel = new EditarCargo();
+    public static void editarCargo(Cargo cargo) {
+        Sistema.painel = new EditarCargo(cargo);
         Sistema.frame.setTitle("Editar cargo");
         atualizarTela();
     }

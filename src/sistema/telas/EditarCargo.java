@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.*;
 import sistema.entidades.Cargo;
 import sistema.principal.Conexao;
+import sistema.principal.Navegador;
 
 /**
  *
@@ -29,23 +30,27 @@ public class EditarCargo extends JPanel {
     JLabel jl_msg, jl_titulo;
     JTextField tf_nome_cargo;
     JButton bt_adicionar;
-    Cargo cargoAtual;
+    Cargo cargo;
 
-    public EditarCargo() {
+    public EditarCargo(Cargo cargoEditar) {
         iniciarComponentes();
         criarEventos();
+        this.cargo = cargoEditar;
+        tf_nome_cargo.setText(cargo.getNome());
+        jl_titulo.setText("Editar cargo (cód. cargo:" + cargo.getId() + ")");
+
     }
 
     private void iniciarComponentes() {
         setLayout(null);
 
         jl_msg = new JLabel("Nome do cargo");
-        jl_titulo = new JLabel("Editar cargo");
+        jl_titulo = new JLabel("Label");
         jl_titulo.setFont(new Font(jl_msg.getFont().toString(), Font.BOLD, 30));
         tf_nome_cargo = new JTextField();
         bt_adicionar = new JButton("Salvar alteração");
 
-        jl_titulo.setBounds(250, 20, 300, 50);
+        jl_titulo.setBounds(150, 20, 450, 50);
         jl_msg.setBounds(150, 100, 300, 20);
         tf_nome_cargo.setBounds(150, 120, 400, 30);
         bt_adicionar.setBounds(250, 250, 200, 40);
@@ -63,7 +68,6 @@ public class EditarCargo extends JPanel {
         bt_adicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 sqlEditarCargo();
             }
 
@@ -88,9 +92,10 @@ public class EditarCargo extends JPanel {
             conexao = DriverManager.getConnection(Conexao.servidor, Conexao.usuario, Conexao.senha);
             //criando a conexão
             instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            instrucaoSQL.executeUpdate("UPDATE cargos SET nome_cargo='" + cargoAtual.getNome() + "'WHERE id=" + cargoAtual.getId());
+            instrucaoSQL.executeUpdate("UPDATE cargos SET nome_cargo='" + tf_nome_cargo.getText() + "' WHERE id='" + cargo.getId() + "'");
 
             JOptionPane.showMessageDialog(null, "Sucesso ao editar cargo");
+            Navegador.listarCargos();
 
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "ERRO AO EDITAR");

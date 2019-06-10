@@ -6,7 +6,10 @@
 package sistema.telas;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
+import sistema.principal.Navegador;
 
 /**
  *
@@ -57,7 +60,23 @@ public class Login extends JPanel {
     }
 
     private void criarEventos() {
+        bt_entrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (tf_login.getText().equals("adm") || pf_senha.getPassword().equals("adm")) {
+                    Navegador.menu();
+                } else {
 
+                    JOptionPane.showMessageDialog(null, "Login ou senha inválidos");
+                }
+            }
+        });
+        bt_fechar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
     }
 
 }

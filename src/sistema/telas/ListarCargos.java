@@ -15,6 +15,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import sistema.entidades.Cargo;
 import sistema.principal.Conexao;
+import sistema.principal.Navegador;
 
 /**
  *
@@ -115,7 +116,7 @@ public class ListarCargos extends JPanel {
         bt_editar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Navegador.editarCargo(cargoAtual);
             }
         });
         bt_excluir.addActionListener(new ActionListener() {
