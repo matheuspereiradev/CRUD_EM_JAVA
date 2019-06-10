@@ -7,7 +7,19 @@ package sistema.telas;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import sistema.entidades.Cargo;
+import sistema.principal.Conexao;
 
 /**
  *
@@ -27,14 +39,10 @@ public class ListarCargos extends JPanel {
         criarEventos();
     }
 
-    private void criarEventos() {
-
-    }
-
     private void criarComponentes() {
         setLayout(null);
 
-        lb_titulo = new JLabel("Consulta cargos", JLabel.CENTER);
+        lb_titulo = new JLabel("Consultar cargos", JLabel.CENTER);
         lb_titulo.setFont(new Font(lb_titulo.getFont().getName(), Font.PLAIN, 30));
         lb_cargo = new JLabel("Nome do cargo", JLabel.LEFT);
         tf_campo_cargo = new JTextField();
@@ -50,12 +58,12 @@ public class ListarCargos extends JPanel {
         listaCargos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         lb_titulo.setBounds(20, 20, 660, 40);
-        lb_cargo.setBounds(150, 120, 400, 20);
-        tf_campo_cargo.setBounds(150, 140, 400, 20);
-        bt_pesquisar.setBounds(560, 140, 130, 40);
-        listaCargos.setBounds(150, 200, 400, 240);
-        bt_editar.setBounds(560, 360, 120, 40);
-        bt_excluir.setBounds(560, 400, 130, 40);
+        lb_cargo.setBounds(100, 120, 400, 20);
+        tf_campo_cargo.setBounds(100, 140, 400, 30);
+        bt_pesquisar.setBounds(510, 140, 130, 30);
+        listaCargos.setBounds(100, 200, 400, 300);
+        bt_editar.setBounds(510, 435, 100, 30);
+        bt_excluir.setBounds(510, 470, 100, 30);
 
         add(lb_titulo);
         add(lb_cargo);
@@ -68,4 +76,70 @@ public class ListarCargos extends JPanel {
         setVisible(true);
     }
 
+    private void criarEventos() {
+        bt_pesquisar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sqlPesquisarCargo(tf_campo_cargo.getText());
+            }
+        });
+        bt_editar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        bt_excluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //sqlExcluirCargo();
+            }
+        });
+        listaCargos.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                cargoAtual = listaCargos.getSelectedValue();
+                if (cargoAtual == null) {
+                    bt_editar.setEnabled(false);
+                    bt_excluir.setEnabled(false);
+                } else {
+                    bt_editar.setEnabled(true);
+                    bt_excluir.setEnabled(true);
+                }
+            }
+        });
+
+    }
+
+    private void sqlPesquisarCargo(String nome) {
+        // conexão
+        Connection conexao;
+        // instrucao SQL
+        Statement instrucaoSQL;
+        // resultados
+        ResultSet resultados;
+
+        try {
+            // conectando ao banco de dados
+            conexao = DriverManager.getConnection(Conexao.servidor, Conexao.usuario, Conexao.senha);
+
+            // criando a instrução SQL
+            instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            resultados = instrucaoSQL.executeQuery("SELECT * FROM cargos WHERE nome_cargo like '%" + nome + "%'");
+
+            listar_cargos_model.clear();
+
+            while (resultados.next()) {
+                Cargo cargo = new Cargo();
+                cargo.setId(resultados.getInt("id"));
+                cargo.setNome(resultados.getString("nome_cargo"));
+
+                listar_cargos_model.addElement(cargo);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao consultar os Cargos.");
+            Logger.getLogger(ListarCargos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
