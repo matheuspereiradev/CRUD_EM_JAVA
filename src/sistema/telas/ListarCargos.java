@@ -7,13 +7,8 @@ package sistema.telas;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.awt.event.*;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
@@ -37,6 +32,7 @@ public class ListarCargos extends JPanel {
     public ListarCargos() {
         criarComponentes();
         criarEventos();
+        iniciarLista();
     }
 
     private void criarComponentes() {
@@ -76,6 +72,39 @@ public class ListarCargos extends JPanel {
         setVisible(true);
     }
 
+    private void iniciarLista() {
+        // conexão
+        Connection conexao;
+        // instrucao SQL
+        Statement instrucaoSQL;
+        // resultados
+        ResultSet resultados;
+
+        try {
+            // conectando ao banco de dados
+            conexao = DriverManager.getConnection(Conexao.servidor, Conexao.usuario, Conexao.senha);
+
+            // criando a instrução SQL
+            instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            resultados = instrucaoSQL.executeQuery("SELECT * FROM cargos ORDER BY nome_cargo ASC");
+
+            listar_cargos_model.clear();
+
+            while (resultados.next()) {
+                Cargo cargo = new Cargo();
+                cargo.setId(resultados.getInt("id"));
+                cargo.setNome(resultados.getString("nome_cargo"));
+
+                listar_cargos_model.addElement(cargo);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao iniciar os cargos.");
+            Logger.getLogger(ListarCargos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     private void criarEventos() {
         bt_pesquisar.addActionListener(new ActionListener() {
             @Override
@@ -92,7 +121,7 @@ public class ListarCargos extends JPanel {
         bt_excluir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //sqlExcluirCargo();
+                sqlExcluirCargo();
             }
         });
         listaCargos.addListSelectionListener(new ListSelectionListener() {
@@ -125,7 +154,7 @@ public class ListarCargos extends JPanel {
 
             // criando a instrução SQL
             instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            resultados = instrucaoSQL.executeQuery("SELECT * FROM cargos WHERE nome_cargo like '%" + nome + "%'");
+            resultados = instrucaoSQL.executeQuery("SELECT * FROM cargos WHERE nome_cargo like '%" + nome + "%' ORDER BY nome_cargo ASC");
 
             listar_cargos_model.clear();
 
@@ -140,6 +169,36 @@ public class ListarCargos extends JPanel {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro ao consultar os Cargos.");
             Logger.getLogger(ListarCargos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void sqlExcluirCargo() {
+
+        int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o cargo" + cargoAtual.getNome() + "?", "Excluir", JOptionPane.YES_NO_OPTION);
+        if (confirmacao == JOptionPane.YES_OPTION) {
+            // conexão
+            Connection conexao;
+            // instrucao SQL
+            Statement instrucaoSQL;
+            // resultados
+            ResultSet resultados;
+
+            try {
+                // conectando ao banco de dados
+                conexao = DriverManager.getConnection(Conexao.servidor, Conexao.usuario, Conexao.senha);
+
+                instrucaoSQL = conexao.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                instrucaoSQL.executeUpdate("DELETE cargos WHERE id=" + cargoAtual.getId() + "");
+
+                JOptionPane.showMessageDialog(null, "Cargo deletado com sucesso");
+                listar_cargos_model.clear();
+                iniciarLista();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao deletar cargo");
+                Logger.getLogger(ListarCargos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }
 }
