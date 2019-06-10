@@ -6,6 +6,7 @@
 package sistema.principal;
 
 import javax.swing.*;
+import sistema.entidades.Cargo;
 import sistema.telas.*;
 
 /**
@@ -28,12 +29,7 @@ public class Sistema {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
-        painel = new ListarCargos();
-        painel.setVisible(true);
-        frame.add(painel);
-
-        frame.setVisible(true);
-
+        Navegador.menu();
     }
 
 }
