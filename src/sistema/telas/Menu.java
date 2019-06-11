@@ -25,6 +25,7 @@ public class Menu extends JPanel {
     public Menu() {
         iniciarComponentes();
         iniciarEventos();
+        Navegador.habilitaMenu();
     }
 
     private void iniciarComponentes() {
