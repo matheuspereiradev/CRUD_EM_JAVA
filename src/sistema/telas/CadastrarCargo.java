@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import sistema.entidades.Cargo;
 import sistema.principal.Conexao;
+import sistema.principal.Navegador;
 
 /**
  *
@@ -85,6 +86,8 @@ public class CadastrarCargo extends JPanel {
             instrucaoSQL.executeUpdate("INSERT INTO cargos (nome_cargo) VALUES ('" + ncargo.getNome() + "');");
 
             JOptionPane.showMessageDialog(null, "Sucesso ao incluir cargo");
+
+            Navegador.menu();
 
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "ERRO AO ADICIONAR");

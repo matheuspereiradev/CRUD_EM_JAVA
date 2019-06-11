@@ -175,7 +175,7 @@ public class ListarCargos extends JPanel {
 
     private void sqlExcluirCargo() {
 
-        int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o cargo" + cargoAtual.getNome() + "?", "Excluir", JOptionPane.YES_NO_OPTION);
+        int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o cargo de " + cargoAtual.getNome() + "?", "Excluir", JOptionPane.YES_NO_OPTION);
         if (confirmacao == JOptionPane.YES_OPTION) {
             // conexão
             Connection conexao;

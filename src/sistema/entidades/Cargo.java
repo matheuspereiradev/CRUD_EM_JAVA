@@ -32,6 +32,6 @@ public class Cargo {
 
     @Override
     public String toString() {
-        return this.id + "-" + this.nome;
+        return this.id + " - " + this.nome;
     }
 }
