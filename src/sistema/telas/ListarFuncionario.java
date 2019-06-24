@@ -6,8 +6,11 @@
 package sistema.telas;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -94,6 +97,18 @@ public class ListarFuncionario extends JPanel {
 
             }
         });
+        btExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                int conf = JOptionPane.showConfirmDialog(null, "deseja realmente excluir " + funcionarioAtual.getNome() + "?", "excluir", JOptionPane.YES_NO_OPTION);
+                if (JOptionPane.YES_OPTION == conf) {
+                    excluirFuncionario();
+                    pesquisarFuncionarios();
+                }
+
+            }
+        });
     }
 
     private void pesquisarFuncionarios() {
@@ -129,6 +144,34 @@ public class ListarFuncionario extends JPanel {
 
                 modelListaFuncionario.addElement(funcionario);
             }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao iniciar os funcionarios.");
+            Logger.getLogger(ListarCargos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void excluirFuncionario() {
+// conexão
+        Connection conexao;
+        // instrucao SQL
+        PreparedStatement instrucaoSQL;
+        // resultados
+        ResultSet resultados;
+
+        try {
+            // conectando ao banco de dados
+            conexao = DriverManager.getConnection(Conexao.servidor, Conexao.usuario, Conexao.senha);
+
+            // criando a instrução SQL
+            String sql = "DELETE FROM funcionario";
+            sql = sql + " WHERE id = ?";
+
+            instrucaoSQL = conexao.prepareStatement(sql);
+            instrucaoSQL.setInt(1, funcionarioAtual.getId());
+            instrucaoSQL.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Funcionario apagado com sucesso");
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro ao iniciar os funcionarios.");
