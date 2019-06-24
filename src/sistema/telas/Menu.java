@@ -20,7 +20,7 @@ public class Menu extends JPanel {
 
     JLabel lb_escolha;
 
-    JButton bt_cad_cargo, bt_lista_cargos, bt_cad_func;
+    JButton bt_cad_cargo, bt_lista_cargos, bt_cad_func, bt_list_func;
 
     public Menu() {
         iniciarComponentes();
@@ -36,15 +36,19 @@ public class Menu extends JPanel {
         bt_cad_cargo = new JButton("Cadastrar novo cargo");
         bt_lista_cargos = new JButton("Lista de cargos");
         bt_cad_func = new JButton("Adicionar novo funcionario");
+        bt_list_func = new JButton("Listar funcionários");
 
         lb_escolha.setBounds(100, 30, 500, 50);
         bt_cad_cargo.setBounds(100, 100, 200, 100);
         bt_lista_cargos.setBounds(100, 210, 200, 100);
         bt_cad_func.setBounds(315, 100, 200, 100);
+        bt_list_func.setBounds(315, 210, 200, 100);
+
         add(lb_escolha);
         add(bt_cad_cargo);
         add(bt_lista_cargos);
         add(bt_cad_func);
+        add(bt_list_func);
 
         setVisible(true);
 
@@ -67,6 +71,12 @@ public class Menu extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Navegador.cadastrarFuncionario();
+            }
+        });
+        bt_list_func.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Navegador.listarFuncionario();
             }
         });
     }

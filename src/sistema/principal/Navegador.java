@@ -59,6 +59,12 @@ public class Navegador {
         atualizarTela();
     }
 
+    public static void listarFuncionario() {
+        Sistema.painel = new ListarFuncionario();
+        Sistema.frame.setTitle("Listar funcionarios");
+        atualizarTela();
+    }
+
     private static void atualizarTela() {
         Sistema.frame.getContentPane().removeAll();
         Sistema.painel.setVisible(true);
@@ -144,7 +150,7 @@ public class Navegador {
         miListarFuncionarios.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                listarFuncionario();
             }
         });
 
