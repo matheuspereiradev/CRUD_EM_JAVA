@@ -12,8 +12,21 @@ package sistema.entidades;
 public class Funcionario {
 
     private int id, cargo;
-    private String nome, sobrenome, data_nascimento, email;
+    private String nome, sobrenome, data_nascimento, email, nomeCargo;
+
+    public String getNomeCargo() {
+        return nomeCargo;
+    }
+
+    public void setNomeCargo(String nomeCargo) {
+        this.nomeCargo = nomeCargo;
+    }
     private double salario;
+
+    @Override
+    public String toString() {
+        return nome + " " + sobrenome + ", " + nomeCargo + " (R$" + salario + ") " + data_nascimento + ", " + email;
+    }
 
     public int getId() {
         return id;
