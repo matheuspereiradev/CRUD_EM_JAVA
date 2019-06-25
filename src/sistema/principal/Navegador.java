@@ -65,6 +65,12 @@ public class Navegador {
         atualizarTela();
     }
 
+    public static void editarFuncionario(Funcionario funcionario) {
+        Sistema.painel = new EditarFuncionario(funcionario);
+        Sistema.frame.setTitle("Editar funcionario");
+        atualizarTela();
+    }
+
     private static void atualizarTela() {
         Sistema.frame.getContentPane().removeAll();
         Sistema.painel.setVisible(true);

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sistema.telas;
 
 import java.awt.Font;
@@ -21,6 +16,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import sistema.entidades.*;
 import sistema.principal.Conexao;
+import sistema.principal.Navegador;
 
 /**
  *
@@ -109,6 +105,12 @@ public class ListarFuncionario extends JPanel {
 
             }
         });
+        btEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Navegador.editarFuncionario(funcionarioAtual);
+            }
+        });
     }
 
     private void pesquisarFuncionarios() {
@@ -152,7 +154,7 @@ public class ListarFuncionario extends JPanel {
     }
 
     private void excluirFuncionario() {
-// conexão
+        // conexão
         Connection conexao;
         // instrucao SQL
         PreparedStatement instrucaoSQL;
